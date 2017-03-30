@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+</style>
+    <meta charset="utf-8">
+    <title>Weather Application</title>
+
+
+      <!--Load jquery CDN-->
+      <script
+              src="https://code.jquery.com/jquery-3.2.1.min.js"
+              integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+              crossorigin="anonymous">
+      </script>
+
+        <!--Load google chart api-->
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body>
+    <!--get input city name-->
+    City
+     <input type="text" name="City" id="txtcity" value=""><br>
+     <button type="button"class="button" name="go" id="go" onclick="goWeather()">Go</button>
+     <!--Display current weather-->
+     <p>Today</p>
+     <p id="date"></p>
+     <div id="main"></div>
+     <div id="tempmax"></div>
+     <div id="tempmin"></div>
+     <div id="pressure"></div>
+     <div id="humidity"></div>
+     <p id="dt2"></p>
+     <p id="txttemp"></p>
+     <div id ="tempCuve"></div>
+
+
+     <script type="text/javascript">
+     //get weather value from openweather api
+          function goWeather()
+          {
+
+           //var valuecity = document.getElementById("txtcity").innerHTML;
+            var textcity = $('#txtcity').val();
+            //console.log(textcity);
+            var weaURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+textcity+"&units=metric&cnt=7&appid=bf583200eb8bcf8b4f65b99ddda60fae"
+            //"http://api.openweathermap.org/data/2.5/weather?q="+textcity+"&appid=4852b8e531e31de866e727736d57a537&units=metric"
+            console.log(weaURL);
+                  var today = new Date();
+                  document.getElementById("date").innerHTML =today.toISOString().substring(0, 10);
+                    $.ajax({
+                              url:weaURL,
+                              method: 'GET'
+                            }).then(function(response) {
+                              //  console.log(response.list[1].weather[0].description);
+                                var main2 = response.list[2].weather[0].main;
+                                var tmax2 =  response.list[2].temp.max;;
+                                var tmin2=response.list[2].temp.min;
+                                var pres2=response.list[2].pressure;
+                                var humi2=response.list[2].humidity;
+                                var dt2 =response.list[2].dt;
+
+                                //console.log(dt);
+                                //console.log(main2+"max"+tmax2+"min"+tmin2+"pres"+pres2+"humi"+humi2);
+                                var main3 = response.list[3].weather[0].main;
+                                var tmax3 =  response.list[3].temp.max;;
+                                var tmin3=response.list[3].temp.min;
+                                var pres3=response.list[3].pressure;
+                                var humi3=response.list[3].humidity;
+
+                                var main4 = response.list[4].weather[0].main;
+                                var tmax4=  response.list[4].temp.max;;
+                                var tmin4=response.list[4].temp.min;
+                                var pres4=response.list[4].pressure;
+                                var humi4=response.list[4].humidity;
+
+                                var main5= response.list[5].weather[0].main;
+                                var tmax5=  response.list[5].temp.max;;
+                                var tmin5=response.list[5].temp.min;
+                                var pres5=response.list[5].pressure;
+                                var humi5=response.list[5].humidity;
+
+                              //  $('#crdate').text(response.city.name);
+                                $('#main').text(response.list[1].weather[0].main);
+                                $('#tempmax').text("Temp Max: "+response.list[1].temp.max+" c°");
+                                $('#tempmin').text("Temp Min: "+response.list[1].temp.min+" c°");
+                                $('#pressure').text("Pressure: "+response.list[1].pressure+" mb");
+                                $('#humidity').text("Humidity: "+response.list[1].humidity+" %");
+
+                            drawChart(response.list[1].temp.max,tmax2,tmax3,tmax4,tmax5);
+                            });
+                  }
+
+
+                //Display chart
+                google.charts.load('current', {'packages':['corechart']});
+                //google.charts.setOnLoadCallback(drawChart);
+                function drawChart(tmax1,tmax2,tmax3,tmax4,tmax5) {
+                  var txttemp="Temperature for 5 day"
+                  document.getElementById("txttemp").innerHTML =txttemp;
+                  var data = google.visualization.arrayToDataTable([
+                    ['Day', 'Temp'],
+                    ['1',tmax1],
+                    ['2',tmax2],
+                    ['3',tmax3],
+                    ['4',tmax4],
+                    ['5',tmax5]
+                  ]);
+
+                  var options = {
+                    title: 'Temperature',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                  };
+
+                  var chart = new google.visualization.LineChart(document.getElementById('tempCuve'));
+
+                  chart.draw(data, options);
+                }
+
+             </script>
+
+
+          </body>
+</html>
