@@ -1,41 +1,84 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <style>
-.button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-</style>
+     <style>
+          body{
+             height: 720px;
+             background: linear-gradient(lightblue,white);}
+             h1{ text-align:center;}
+            .button {
+                 background-color: #4CAF50; /* Green */
+                 border: none;
+                 color:Black;
+                 padding: 8px 100px;
+                 text-align: center;
+                 text-decoration: none;
+                 display: inline-block;
+                 font-size: 16px;
+                 margin: 4px 36px;
+                 transition-duration: 0.4s;
+                 transition-duration: 0.4s;
+                 cursor: pointer;
+             }
+
+           .button1 {
+               background-color: #4CAF50;
+               color: white;
+               border: 2px solid #4CAF50;
+           }
+           .button1:hover {
+               background-color: white;
+               color: black;
+           }
+            input[type=text]{
+              text-align: center;
+              width: 20%;
+              padding: 15px 20px;
+              margin: 15px 0;
+              display: inline-block;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              box-sizing: border-box;
+            }
+
+            #today{text-align:center;
+            font-size: 30px}
+            #date{text-align:center;
+            font-size: 36px}
+            #main{text-align:center;
+            font-size: 36px}
+            #tempmax{text-align:center;
+            font-size:18px}
+            #pressure{text-align:center;
+            font-size:18px}
+            #tempmin{text-align:center;
+            font-size:18px}
+            #humidity{text-align:center;
+            font-size:18px}
+            #txttemp{text-align:center;
+            font-size: 25px}
+
+    </style>
     <meta charset="utf-8">
     <title>Weather Application</title>
-
-
       <!--Load jquery CDN-->
       <script
               src="https://code.jquery.com/jquery-3.2.1.min.js"
               integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
               crossorigin="anonymous">
       </script>
-
         <!--Load google chart api-->
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
     <!--get input city name-->
-    City
-     <input type="text" name="City" id="txtcity" value=""><br>
-     <button type="button"class="button" name="go" id="go" onclick="goWeather()">Go</button>
+    <h1>Weather Application</h1>
+
+     <label for="txtcity">City</label>
+     <input type="text" name="City" id="txtcity" placeholder="Your City..Ex.Phuket" value=""><br>
+     <button type="button"class="button button1" name="go" id="go" onclick="goWeather()">Search</button>
      <!--Display current weather-->
-     <p>Today</p>
+     <p id="today">Today</p>
      <p id="date"></p>
      <div id="main"></div>
      <div id="tempmax"></div>
@@ -46,18 +89,16 @@
      <p id="txttemp"></p>
      <div id ="tempCuve"></div>
 
-
+     <!--Function-->
      <script type="text/javascript">
      //get weather value from openweather api
           function goWeather()
           {
-
-           //var valuecity = document.getElementById("txtcity").innerHTML;
             var textcity = $('#txtcity').val();
             //console.log(textcity);
             var weaURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+textcity+"&units=metric&cnt=7&appid=bf583200eb8bcf8b4f65b99ddda60fae"
             //"http://api.openweathermap.org/data/2.5/weather?q="+textcity+"&appid=4852b8e531e31de866e727736d57a537&units=metric"
-            console.log(weaURL);
+            //console.log(weaURL);
                   var today = new Date();
                   document.getElementById("date").innerHTML =today.toISOString().substring(0, 10);
                     $.ajax({
@@ -111,7 +152,7 @@
                   var txttemp="Temperature for 5 day"
                   document.getElementById("txttemp").innerHTML =txttemp;
                   var data = google.visualization.arrayToDataTable([
-                    ['Day', 'Temp'],
+                    ['Day', 'Temp_Max'],
                     ['1',tmax1],
                     ['2',tmax2],
                     ['3',tmax3],
